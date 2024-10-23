@@ -17,53 +17,54 @@ function loginSucces() {
     formData.append("usuario", usuario);
     formData.append("password", password);
 
-    fetch(BASE_URL+'SistemaGestionArq/api/login/ingresar', {
+    fetch(BASE_URL + 'SistemaGestionArq/api/login/ingresar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: formData
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la solicitud: ' + response.status);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.token) {
-            localStorage.setItem('usuario', usuario);
-            localStorage.setItem('token', data.token);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('usuario', usuario);
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('rol', data.rol);
 
-            // Aplicar la clase de animación y redirigir después de que termine la animación
-            document.body.classList.add('slide-out-left');
-            setTimeout(() => {
-                window.location.href = BASE_URL+'SistemaGestionArq/HTML/PaginaPrincipal.html';
-            }, 1000); 
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Usuario o contraseña incorrectos',
-                confirmButtonText: 'OK'
+                    // Aplicar la clase de animación y redirigir después de que termine la animación
+                    document.body.classList.add('slide-out-left');
+                    setTimeout(() => {
+                        window.location.href = BASE_URL + 'SistemaGestionArq/HTML/PaginaPrincipal.html';
+                    }, 1000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Usuario o contraseña incorrectos',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error al procesar la solicitud:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al procesar la solicitud',
+                    confirmButtonText: 'OK'
+                });
             });
-        }
-    })
-    .catch(error => {
-        console.error('Error al procesar la solicitud:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Ocurrió un error al procesar la solicitud',
-            confirmButtonText: 'OK'
-        });
-    });
 }
 
 function validarFormulario() {
     const usuarioLogin = document.getElementById('username').value;
     const passwordLogin = document.getElementById('password').value;
-    
+
     if (usuarioLogin.trim() === '') {
         Swal.fire({
             title: 'Advertencia',
@@ -87,7 +88,7 @@ function validarFormulario() {
 
 
 // Agrega un event listener al campo de contraseña
-document.getElementById('password').addEventListener('keypress', function(event) {
+document.getElementById('password').addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault(); // Previene el comportamiento por defecto del formulario
         loginSucces(); // Llama a la función de inicio de sesión

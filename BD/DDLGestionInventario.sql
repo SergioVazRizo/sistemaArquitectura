@@ -10,7 +10,7 @@ CREATE TABLE Usuario (
     a_paterno       VARCHAR(100),
     a_materno       VARCHAR(100),
     nombre          VARCHAR(100),
-    email           VARCHAR(100)
+    rol           VARCHAR(100)
 );
 
 Create Table Libro (

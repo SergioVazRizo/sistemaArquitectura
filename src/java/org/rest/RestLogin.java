@@ -31,7 +31,7 @@ public class RestLogin {
         ControllerLogin objCL = new ControllerLogin();
         Usuario token = objCL.checkUser(u.getUsuario(), u.getPassword());
         if (token != null) {
-            out = "{\"success\":\"Usuario Encontrado\",\"token\":\"" + token.getToken() + "\"}";
+            out = "{\"success\":\"Usuario Encontrado\",\"token\":\"" + token.getToken() + "\", \"rol\":\"" + token.getRol() + "\"}";
         } else {
             out = "{\"error\":\"Usuario no encontrado\"}";
         }

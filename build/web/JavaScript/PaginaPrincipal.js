@@ -27,37 +27,41 @@ function cerrarSesion() {
         return;
     }
 
-    fetch(BASE_URL + 'SistemaGestion/api/login/cerrar', {
+    fetch(BASE_URL + 'api/login/cerrar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: 'usuario=' + encodeURIComponent(usuario) + '&token=' + encodeURIComponent(token)
     })
-            .then(response => {
-                if (response.ok) {
-                    localStorage.removeItem('usuario');
-                    localStorage.removeItem('token');
-                    Swal.fire({
-                        title: 'Sesión cerrada',
-                        text: 'exitosamente',
-                        icon: 'success'
-                    }).then(() => {
-                        window.location.href = BASE_URL  + 'SistemaGestion/index.html';
-                    });
-                } else {
-                    throw new Error('Error al cerrar sesión');
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Ha ocurrido un error al cerrar sesión',
-                    icon: 'error'
-                });
+    .then(response => {
+        if (response.ok) {
+            // Remover usuario, token y rol del localStorage
+            localStorage.removeItem('usuario');
+            localStorage.removeItem('token');
+            localStorage.removeItem('rol'); // Eliminar el rol del localStorage
+
+            Swal.fire({
+                title: 'Sesión cerrada',
+                text: 'exitosamente',
+                icon: 'success'
+            }).then(() => {
+                window.location.href = BASE_URL + 'SistemaGestion/index.html';
             });
+        } else {
+            throw new Error('Error al cerrar sesión');
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al cerrar sesión',
+            icon: 'error'
+        });
+    });
 }
+
 
 function verificarToken() {
     const token = localStorage.getItem('token');

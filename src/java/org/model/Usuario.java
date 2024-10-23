@@ -17,11 +17,11 @@ public class Usuario {
     private String a_paterno;
     private String a_materno;
     private String nombre;
-    private String email;
+    private String rol;
 
     // Constructor
     public Usuario(int cve_usuario, String usuario, String password, String token, String a_paterno, String a_materno,
-            String nombre, String email) {
+            String nombre, String rol) {
         this.cve_usuario = cve_usuario;
         this.usuario = usuario;
         this.password = password;
@@ -29,7 +29,7 @@ public class Usuario {
         this.a_paterno = a_paterno;
         this.a_materno = a_materno;
         this.nombre = nombre;
-        this.email = email;
+        this.rol = rol;
     }
 
     // Getters y Setters
@@ -89,12 +89,12 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getEmail() {
-        return email;
+    public String getRol() {
+        return rol;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
 }

@@ -1,4 +1,4 @@
-//URL BASE
+
 function setBaseURL() {
     const URL_BASE = 'http://localhost:8080/SistemaGestionArq/';
     return URL_BASE;
@@ -40,30 +40,34 @@ function cerrarSesion() {
         },
         body: 'usuario=' + encodeURIComponent(usuario) + '&token=' + encodeURIComponent(token)
     })
-            .then(response => {
-                if (response.ok) {
-                    localStorage.removeItem('usuario');
-                    localStorage.removeItem('token');
-                    Swal.fire({
-                        title: 'Sesión cerrada',
-                        text: 'exitosamente',
-                        icon: 'success'
-                    }).then(() => {
-                        window.location.href = BASE_URL + 'SistemaGestion/index.html';
-                    });
-                } else {
-                    throw new Error('Error al cerrar sesión');
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Ha ocurrido un error al cerrar sesión',
-                    icon: 'error'
-                });
+    .then(response => {
+        if (response.ok) {
+            // Remover usuario, token y rol del localStorage
+            localStorage.removeItem('usuario');
+            localStorage.removeItem('token');
+            localStorage.removeItem('rol'); // Eliminar el rol del localStorage
+
+            Swal.fire({
+                title: 'Sesión cerrada',
+                text: 'exitosamente',
+                icon: 'success'
+            }).then(() => {
+                window.location.href = BASE_URL + 'SistemaGestion/index.html';
             });
+        } else {
+            throw new Error('Error al cerrar sesión');
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al cerrar sesión',
+            icon: 'error'
+        });
+    });
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const logoutBtn = document.getElementById('logoutBtn');
@@ -128,9 +132,9 @@ function cargarUsuarios() {
                     <td>${usuario.a_paterno}</td>
                     <td>${usuario.a_materno}</td>
                     <td>${usuario.nombre}</td>
-                    <td>${usuario.email}</td>
+                    <td>${usuario.rol}</td>
                     <td>
-                        <button type="button" class="btn btn-info" onclick="seleccionarUsuario('${usuario.usuario}', '${usuario.password}', ${usuario.cve_usuario}, '${usuario.a_paterno}', '${usuario.a_materno}', '${usuario.nombre}', '${usuario.email}')" data-id="${usuario.cve_usuario}"><i class='bx bxs-select-multiple'></i></button>
+                        <button type="button" class="btn btn-info" onclick="seleccionarUsuario('${usuario.usuario}', '${usuario.password}', ${usuario.cve_usuario}, '${usuario.a_paterno}', '${usuario.a_materno}', '${usuario.nombre}', '${usuario.rol}')" data-id="${usuario.cve_usuario}"><i class='bx bxs-select-multiple'></i></button>
                     </td>
                 </tr>
             `;
@@ -165,9 +169,9 @@ function buscarUsuario() {
                         <td>${usuario.a_paterno}</td>
                         <td>${usuario.a_materno}</td>
                         <td>${usuario.nombre}</td>
-                        <td>${usuario.email}</td>
+                        <td>${usuario.rol}</td>
                         <td>
-                            <button type="button" class="btn btn-info" onclick="seleccionarUsuario('${usuario.usuario}', '${usuario.password}', ${usuario.cve_usuario}, '${usuario.a_paterno}', '${usuario.a_materno}', '${usuario.nombre}', '${usuario.email}')" data-id="${usuario.cve_usuario}"><i class='bx bxs-select-multiple'></i></button>
+                            <button type="button" class="btn btn-info" onclick="seleccionarUsuario('${usuario.usuario}', '${usuario.password}', ${usuario.cve_usuario}, '${usuario.a_paterno}', '${usuario.a_materno}', '${usuario.nombre}', '${usuario.rol}')" data-id="${usuario.cve_usuario}"><i class='bx bxs-select-multiple'></i></button>
                         </td>
                     </tr>
                 `;
@@ -195,14 +199,14 @@ function agregarUsuario() {
     const a_paterno = document.getElementById('a_paterno').value;
     const a_materno = document.getElementById('a_materno').value;
     const nombre = document.getElementById('nombre').value;
-    const email = document.getElementById('email').value;
+    const rol = document.getElementById('rol').value;
 
     fetch(BASE_URL + 'api/usuario/agregarUsuario', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `usuario=${encodeURIComponent(usuario)}&password=${encodeURIComponent(password)}&a_paterno=${encodeURIComponent(a_paterno)}&a_materno=${encodeURIComponent(a_materno)}&nombre=${encodeURIComponent(nombre)}&email=${encodeURIComponent(email)}`
+        body: `usuario=${encodeURIComponent(usuario)}&password=${encodeURIComponent(password)}&a_paterno=${encodeURIComponent(a_paterno)}&a_materno=${encodeURIComponent(a_materno)}&nombre=${encodeURIComponent(nombre)}&rol=${encodeURIComponent(rol)}`
     })
             .then(response => response.json())
             .then(data => {
@@ -249,14 +253,14 @@ function editarUsuario() {
     const a_paterno = document.getElementById('a_paterno').value;
     const a_materno = document.getElementById('a_materno').value;
     const nombre = document.getElementById('nombre').value;
-    const email = document.getElementById('email').value;
+    const rol = document.getElementById('rol').value;
 
     fetch(BASE_URL + 'api/usuario/editarUsuario', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `cve_usuario=${encodeURIComponent(idUsuario)}&usuario=${encodeURIComponent(usuario)}&password=${encodeURIComponent(password)}&a_paterno=${encodeURIComponent(a_paterno)}&a_materno=${encodeURIComponent(a_materno)}&nombre=${encodeURIComponent(nombre)}&email=${encodeURIComponent(email)}`
+        body: `cve_usuario=${encodeURIComponent(idUsuario)}&usuario=${encodeURIComponent(usuario)}&password=${encodeURIComponent(password)}&a_paterno=${encodeURIComponent(a_paterno)}&a_materno=${encodeURIComponent(a_materno)}&nombre=${encodeURIComponent(nombre)}&rol=${encodeURIComponent(rol)}`
     })
             .then(response => response.json())
             .then(data => {
@@ -268,7 +272,7 @@ function editarUsuario() {
                     }).then(() => {
                         cargarUsuarios();
                         limpiarFormulario();
-                        localStorage.removeItem('selectedUserId'); // Limpiar el ID del usuario seleccionado
+                        localStorage.removeItem('selectedUserId');
                     });
                 } else {
                     Swal.fire({
@@ -288,18 +292,17 @@ function editarUsuario() {
             });
 }
 
-function seleccionarUsuario(usuario, password, idUsuario, a_paterno, a_materno, nombre, email) {
+function seleccionarUsuario(usuario, password, idUsuario, a_paterno, a_materno, nombre, rol) {
     document.getElementById('usuario').value = usuario;
     document.getElementById('password').value = password;
     document.getElementById('a_paterno').value = a_paterno;
     document.getElementById('a_materno').value = a_materno;
     document.getElementById('nombre').value = nombre;
-    document.getElementById('email').value = email;
+    document.getElementById('rol').value = rol;
     localStorage.setItem('selectedUserId', idUsuario);
 }
 
 function obtenerIdUsuarioSeleccionado() {
-    // Obtener el ID del usuario seleccionado guardado en localStorage
     return localStorage.getItem('selectedUserId');
 }
 
@@ -309,7 +312,7 @@ function limpiarFormulario() {
     document.getElementById('a_paterno').value = '';
     document.getElementById('a_materno').value = '';
     document.getElementById('nombre').value = '';
-    document.getElementById('email').value = '';
+    document.getElementById('rol').value = '';
     document.getElementById('search-input').value = '';
 }
 
@@ -317,16 +320,14 @@ function validarFormulario() {
     const a_paterno = document.getElementById('a_paterno').value;
     const a_materno = document.getElementById('a_materno').value;
     const nombre = document.getElementById('nombre').value;
-    const email = document.getElementById('email').value;
+    const rol = document.getElementById('rol').value;
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (
             a_paterno.trim() === '' ||
             a_materno.trim() === '' ||
-            nombre.trim() === '' ||
-            email.trim() === '' ||
-            !emailRegex.test(email.trim())
+            nombre.trim() === ''    ||
+            rol.trim() === ''
             ) {
         Swal.fire({
             title: 'Advertencia',
@@ -390,10 +391,10 @@ function procesarTextoVoz(texto) {
         if (nombre)
             datosUsuario.nombre = nombre;
     }
-    if (texto.includes("email")) {
-        const email = obtenerValorCampo(texto, "email");
-        if (email)
-            datosUsuario.email = email;
+    if (texto.includes("rol")) {
+        const rol = obtenerValorCampo(texto, "rol");
+        if (rol)
+            datosUsuario.rol = rol;
     }
 
     if (Object.keys(datosUsuario).length > 0) {
@@ -420,7 +421,7 @@ function llenarFormulario(datosUsuario) {
         'a_paterno': 'a_paterno',
         'a_materno': 'a_materno',
         'nombre': 'nombre',
-        'email': 'email'
+        'rol': 'rol'
     };
 
     for (const [key, value] of Object.entries(datosUsuario)) {

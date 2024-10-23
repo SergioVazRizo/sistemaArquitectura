@@ -33,9 +33,9 @@ public class ControllerUsuario {
                 String a_paterno = rs.getString("a_paterno");
                 String a_materno = rs.getString("a_materno");
                 String nombre = rs.getString("nombre");
-                String email = rs.getString("email");
+                String rol = rs.getString("rol");
 
-                Usuario usuarioObj = new Usuario(cve_usuario, usuario, password, token, a_paterno, a_materno, nombre, email);
+                Usuario usuarioObj = new Usuario(cve_usuario, usuario, password, token, a_paterno, a_materno, nombre, rol);
                 usuariosList.add(usuarioObj);
             }
         } catch (SQLException e) {
@@ -81,9 +81,9 @@ public class ControllerUsuario {
                 String a_paterno = rs.getString("a_paterno");
                 String a_materno = rs.getString("a_materno");
                 String nombre = rs.getString("nombre");
-                String email = rs.getString("email");
+                String rol = rs.getString("rol");
 
-                Usuario usuarioObj = new Usuario(cve_usuario, usuario, password, token, a_paterno, a_materno, nombre, email);
+                Usuario usuarioObj = new Usuario(cve_usuario, usuario, password, token, a_paterno, a_materno, nombre, rol);
                 usuariosList.add(usuarioObj);
             }
         } catch (SQLException e) {
@@ -107,7 +107,7 @@ public class ControllerUsuario {
 
     public List<Usuario> buscarUsuario(String query) throws SQLException, ClassNotFoundException {
         List<Usuario> usuariosList = new ArrayList<>();
-        String sql = "SELECT * FROM Usuario WHERE cve_usuario LIKE ? OR usuario LIKE ? OR password LIKE ? OR a_paterno LIKE ? OR a_materno LIKE ?  OR email LIKE ?";
+        String sql = "SELECT * FROM Usuario WHERE cve_usuario LIKE ? OR usuario LIKE ? OR password LIKE ? OR a_paterno LIKE ? OR a_materno LIKE ?  OR rol LIKE ?";
         ConexionMySQL connMySQL = new ConexionMySQL();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -130,21 +130,21 @@ public class ControllerUsuario {
                     rs.getString("a_paterno"),
                     rs.getString("a_materno"),
                     rs.getString("nombre"),
-                    rs.getString("email")
+                    rs.getString("rol")
                 );
                 usuariosList.add(usuario);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Maneja el cierre de recursos
+
         }
 
         return usuariosList;
     }
 
     public boolean agregarUsuario(Usuario usuario) throws ClassNotFoundException {
-        String query = "INSERT INTO Usuario (usuario, password, token, a_paterno, a_materno, nombre, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Usuario (usuario, password, token, a_paterno, a_materno, nombre, rol) VALUES (?, ?, ?, ?, ?, ?, ?)";
         ConexionMySQL objConn = new ConexionMySQL();
         try {
             Connection conn = objConn.openConnection();
@@ -155,7 +155,7 @@ public class ControllerUsuario {
             pstmt.setString(4, usuario.getA_paterno());
             pstmt.setString(5, usuario.getA_materno());
             pstmt.setString(6, usuario.getNombre());
-            pstmt.setString(7, usuario.getEmail());
+            pstmt.setString(7, usuario.getRol());
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -165,7 +165,8 @@ public class ControllerUsuario {
     }
 
     public boolean editarUsuario(Usuario usuario) throws ClassNotFoundException {
-        String query = "UPDATE Usuario SET usuario = ?, password = ?, token = ?, a_paterno = ?, a_materno = ?, nombre = ?, rol = ?, email = ? WHERE cve_usuario = ?";
+        String query = "UPDATE Usuario SET usuario = ?, password = ?, token = ?, a_paterno = ?, a_materno = ?, nombre = ?, rol = ? WHERE cve_usuario = ?";
+        
         ConexionMySQL objConn = new ConexionMySQL();
         try {
             Connection conn = objConn.openConnection();
@@ -176,8 +177,8 @@ public class ControllerUsuario {
             pstmt.setString(4, usuario.getA_paterno());
             pstmt.setString(5, usuario.getA_materno());
             pstmt.setString(6, usuario.getNombre());
-            pstmt.setString(9, usuario.getEmail());
-            pstmt.setInt(10, usuario.getCve_usuario());
+            pstmt.setString(7, usuario.getRol());
+            pstmt.setInt(8, usuario.getCve_usuario());
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException ex) {

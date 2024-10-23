@@ -60,11 +60,11 @@ public class RestUsuario {
             @FormParam("a_paterno") String a_paterno,
             @FormParam("a_materno") String a_materno,
             @FormParam("nombre") String nombre,
-            @FormParam("email") String email) {
+            @FormParam("rol") String rol) {
         String out;
         ControllerUsuario cu = new ControllerUsuario();
         try {
-            Usuario nuevoUsuario = new Usuario(0, usuario, password, token, a_paterno, a_materno, nombre, email);
+            Usuario nuevoUsuario = new Usuario(0, usuario, password, token, a_paterno, a_materno, nombre, rol);
             boolean resultado = cu.agregarUsuario(nuevoUsuario);
             if (resultado) {
                 out = "{\"success\":\"Usuario agregado correctamente\"}";
@@ -89,11 +89,11 @@ public class RestUsuario {
             @FormParam("a_paterno") String a_paterno,
             @FormParam("a_materno") String a_materno,
             @FormParam("nombre") String nombre,
-            @FormParam("email") String email) {
+            @FormParam("rol") String rol) {
         String out;
         ControllerUsuario cu = new ControllerUsuario();
         try {
-            Usuario usuarioActualizado = new Usuario(cve_usuario, usuario, password, token, a_paterno, a_materno, nombre, email);
+            Usuario usuarioActualizado = new Usuario(cve_usuario, usuario, password, token, a_paterno, a_materno, nombre, rol);
             boolean resultado = cu.editarUsuario(usuarioActualizado);
             if (resultado) {
                 out = "{\"success\":\"Usuario editado correctamente\"}";
