@@ -263,12 +263,13 @@ async function eliminarLibro(cve_libro) {
 }
                 
 function limpiarFormulario() {
+    document.getElementById("cve_libro").value = "";
     document.getElementById("nombre_libro").value = "";
     document.getElementById("autor_libro").value = "";
     document.getElementById("genero_libro").value = "";
     document.getElementById("pfd_libro").value = "";
-    removePDF(); // Limpiar la vista previa del PDF
-    libroEditando = null; // Reiniciar la variable de edición
+    removePDF();
+    libroEditando = null;
 }
 
 window.onload = function () {
