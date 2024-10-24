@@ -44,6 +44,20 @@ public class RestLibro {
         }
     }
 
+    @Path("buscarLibroPorNombre/{nombre}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Response buscarLibroPorNombre(@PathParam("nombre") String nombre) {
+        try {
+            List<LibroViewModels> libros = cl.buscarLibroPorNombre(nombre);
+            return Response.ok(gson.toJson(libros)).build();
+        } catch (SQLException | ClassNotFoundException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Ocurrió un error. Intente más tarde.\"}")
+                    .build();
+        }
+    }
+
     @Path("agregarLibro")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,8 +65,7 @@ public class RestLibro {
             @FormParam("autor_libro") String autor_libro,
             @FormParam("genero_libro") String genero_libro,
             @FormParam("estatus") String estatus,
-            @FormParam("pdf_libro") String pdf_libro)
-            {
+            @FormParam("pdf_libro") String pdf_libro) {
         if (nombre_libro == null || autor_libro == null || genero_libro == null || pdf_libro == null || estatus == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\":\"Todos los campos son obligatorios.\"}")
@@ -109,5 +122,5 @@ public class RestLibro {
                     .build();
         }
     }
-    
+
 }

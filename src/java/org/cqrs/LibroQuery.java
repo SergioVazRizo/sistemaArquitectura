@@ -6,6 +6,7 @@ import org.dao.LibroDAO;
 import org.model.Libro;
 
 public class LibroQuery {
+
     private final LibroDAO libroDAO;
 
     public LibroQuery() {
@@ -15,4 +16,9 @@ public class LibroQuery {
     public List<Libro> getAllLibros() throws SQLException, ClassNotFoundException {
         return libroDAO.getAllLibros();
     }
+
+    public List<Libro> buscarLibroPorNombre(String nombre) throws SQLException, ClassNotFoundException {
+        return libroDAO.buscarLibroPorNombre(nombre);
+    }
+
 }

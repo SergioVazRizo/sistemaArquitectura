@@ -1,0 +1,204 @@
+/* Contenido */
+* {
+    font-family: "Roboto Mono", sans-serif;
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
+}
+
+/* Contenedor principal */
+.contenido_principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 1200px; /* Limita el ancho máximo */
+    margin-left: 260px; /* Ancho del sidebar */
+    height: max-content;
+}
+
+@media screen and (max-width: 768px) {
+    .contenido_principal {
+        margin-left: 0;
+    }
+}
+
+/* Estilo para los títulos */
+h1, h2 {
+    font-size: 2.5em;
+    color: #333; /* Color de texto */
+}
+
+
+
+/* Estilo para la búsqueda */
+.search-container {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 40px; /* Ajustar el margen inferior */
+    width: 100%;
+}
+
+.search-box {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 350px; /* Controla el ancho del input */
+    border: 2px solid #ccc;
+    border-radius: 15px;
+}
+
+/* Estilo para los botones */
+button {
+    padding: 12.5px 30px;
+    border: 0;
+    border-radius: 50px;
+    background-color: #074173;
+    color: #ffffff;
+    font-weight: bold;
+    transition: all 0.3s;
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+button:hover {
+    background-color: #1679AB;
+    box-shadow: 0 0 15px #6fc5ff50;
+    transform: scale(1.05);
+}
+
+/* Estilo para los resultados */
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre cada resultado */
+    margin-top: 20px; /* Espacio superior */
+    width: 100%;
+    max-width: 100%; 
+}
+
+.result-item {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.result-item h3 {
+    margin: 0 0 10px;
+    color: #074173;
+}
+
+.result-item p {
+    margin: 0 0 15px;
+    color: #666;
+}
+
+.result-item button {
+    align-self: flex-end;
+    background-color: #074173;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+}
+
+.result-item button:hover {
+    background-color: #1679AB;
+}
+
+/* Estilos para el contenedor de previsualización de PDF */
+#pdfPreviewContainer {
+    display: none;
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fafafa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    padding: 20px;
+}
+
+/* Encabezado de la previsualización */
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.preview-header span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Estilos del iframe */
+#pdfPreview {
+    width: 100%;
+    height: 400px;
+    border: none;
+}
+
+/* El modal (fondo oscuro) */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: no-display; 
+    background-color: rgba(0, 0, 0, 0.75); 
+}
+
+/* Contenido del modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* Centrado vertical y horizontal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Ancho del modal */
+    max-width: 900px;
+}
+
+/* Estilo para el encabezado */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para el botón de cierre */
+.close {
+    color: #000;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover, .close:focus {
+    color: #d9534f;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* El iframe del PDF dentro del modal */
+.pdf-frame {
+    width: 100%;
+    height: 500px;
+    border: none;
+}

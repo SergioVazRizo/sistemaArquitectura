@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Biblioteca Virtual</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../CSS/paginaPrincipal.css" rel="stylesheet" type="text/css"/>
+        <link href="../CSS/BusquedaLibros.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="../Img/home.svg" type="image/x-icon">
+        <link rel="icon" href="../Img/home.svg" type="image/png">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     </head>
     <body>
         <div class="sidebar close">
@@ -18,27 +19,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 <span class="logo_name">Gestión de Préstamos</span>
             </div>
             <ul class="nav-links">
-                <li id="catalogoUsuarios">
-                    <div class="icon-link">
-                        <a href="CatalogoUsuarios.html">
-                            <i class='bx bx-user'></i>
-                            <span class="link_name">Usuarios</span>
-                        </a>
-                    </div>
-                </li>
-                <li id="catalogoLibros">
-                    <div class="icon-link">
-                        <a href="CatalogoLibros.html">
-                            <i class='bx bxs-book-alt'></i>
-                            <span class="link_name">Gestión de Libros</span>
-                        </a>
-                    </div>
-                </li>
                 <li id="busquedaLibros">
                     <div class="icon-link">
                         <a href="BusquedaLibros.html">
                             <i class='bx bx-book-bookmark'></i>
-                            <span class="link_name">Búsqueda Global</span>
+                            <span class="link_name">Biblioteca Virtual</span>
                         </a>
                     </div>
                 </li>
@@ -50,5 +35,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 </li>
             </ul>
         </div>
+        <div class="contenido_principal">
+            <h1>Biblioteca Virtual</h1>
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-box" placeholder="Ingrese el nombre del libro" />
+                <button id="searchBtn">Buscar<i class='bx bx-search-alt-2'></i></button>
+                <button id="clearBtn">Limpiar<i class='bx bx-x-circle'></i></button>
+                <div class="results" id="resultsContainer"></div>
+            </div>
+            <div id="pdfModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <h3>Vista Previa del Documento</h3>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="pdfPreviewModal" class="pdf-frame"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../JavaScript/BusquedaLibro.js" type="text/javascript"></script>
     </body>
 </html>

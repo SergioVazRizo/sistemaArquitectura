@@ -9,6 +9,31 @@ function setBaseURL() {
 // Llama a la función y almacena el resultado en una constante global
 const BASE_URL = setBaseURL();
 
+document.addEventListener('DOMContentLoaded', function () {
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: '¿Estás seguro de que deseas salir?',
+                text: 'Tu sesión actual se cerrará',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    cerrarSesion();
+                }
+            });
+        });
+    }
+});
+
 function verificarToken() {
     const token = localStorage.getItem('token');
 
@@ -33,32 +58,32 @@ function cerrarSesion() {
         },
         body: 'usuario=' + encodeURIComponent(usuario) + '&token=' + encodeURIComponent(token)
     })
-    .then(response => {
-        if (response.ok) {
-            // Remover usuario, token y rol del localStorage
-            localStorage.removeItem('usuario');
-            localStorage.removeItem('token');
-            localStorage.removeItem('rol'); // Eliminar el rol del localStorage
+            .then(response => {
+                if (response.ok) {
+                    // Remover usuario, token y rol del localStorage
+                    localStorage.removeItem('usuario');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('rol'); // Eliminar el rol del localStorage
 
-            Swal.fire({
-                title: 'Sesión cerrada',
-                text: 'exitosamente',
-                icon: 'success'
-            }).then(() => {
-                window.location.href = BASE_URL + 'SistemaGestion/index.html';
+                    Swal.fire({
+                        title: 'Sesión cerrada',
+                        text: 'exitosamente',
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.href = BASE_URL + '/index.html';
+                    });
+                } else {
+                    throw new Error('Error al cerrar sesión');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Ha ocurrido un error al cerrar sesión',
+                    icon: 'error'
+                });
             });
-        } else {
-            throw new Error('Error al cerrar sesión');
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        Swal.fire({
-            title: 'Error',
-            text: 'Ha ocurrido un error al cerrar sesión',
-            icon: 'error'
-        });
-    });
 }
 
 function previewPDF(event) {
@@ -114,7 +139,7 @@ function seleccionarLibro(cve_libro, nombre_libro, autor_libro, genero_libro, es
     document.getElementById("estatus").value = estatus;
 
     // Almacenar la clave del libro en una variable global
-    libroEditando = cve_libro; 
+    libroEditando = cve_libro;
 
     // Decodificar y mostrar el PDF en la vista previa si existe
     if (pdf_base64) {
@@ -170,22 +195,23 @@ async function agregarLibro() {
                     `pdf_libro=${encodeURIComponent(base64String)}`
         });
 
-        const result = await response.json(); 
+        const result = await response.json();
 
         if (response.ok) {
             Swal.fire("Éxito", "El libro se ha guardado correctamente", "success");
-            limpiarFormulario(); 
-            await cargarLibros(); 
+            limpiarFormulario();
+            await cargarLibros();
         } else {
             Swal.fire("Error", result.error || "Hubo un problema al guardar el libro", "error");
         }
     };
 
-    reader.readAsDataURL(file); 
+    reader.readAsDataURL(file);
 }
 
 async function editarLibro() {
-    if (libroEditando === null) return; // Verificar si hay un libro en edición
+    if (libroEditando === null)
+        return; // Verificar si hay un libro en edición
 
     const fileInput = document.getElementById("pfd_libro");
     const file = fileInput.files[0];
@@ -221,20 +247,20 @@ async function actualizarLibro(cve_libro, pdf_libro) {
                 `autor_libro=${encodeURIComponent(document.getElementById("autor_libro").value)}&` +
                 `genero_libro=${encodeURIComponent(document.getElementById("genero_libro").value)}&` +
                 `estatus=${encodeURIComponent(document.getElementById("estatus").value)}&` +
-                           (pdf_libro ? `pdf_libro=${encodeURIComponent(pdf_libro)}` : '')
+                (pdf_libro ? `pdf_libro=${encodeURIComponent(pdf_libro)}` : '')
     });
 
     const result = await response.json(); // Obtener respuesta en formato JSON
 
     if (response.ok) {
         Swal.fire("Éxito", "El libro se ha actualizado correctamente", "success");
-        limpiarFormulario(); 
-        await cargarLibros(); 
+        limpiarFormulario();
+        await cargarLibros();
     } else {
         Swal.fire("Error", result.error || "Hubo un problema al actualizar el libro", "error");
     }
 }
-                
+
 function limpiarFormulario() {
     document.getElementById("nombre_libro").value = "";
     document.getElementById("autor_libro").value = "";
