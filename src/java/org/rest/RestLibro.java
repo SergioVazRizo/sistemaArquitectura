@@ -8,12 +8,27 @@ import java.sql.SQLException;
 import java.util.List;
 import org.controller.ControllerLibro;
 import org.model.Libro;
+import org.viewModels.LibroViewModels;
 
 @Path("libro")
 public class RestLibro {
 
     private final ControllerLibro cl = new ControllerLibro();
     private final Gson gson = new Gson();
+
+    @Path("getAllLibrosPublic")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Response getAllLibrosPublic() {
+        try {
+            List<LibroViewModels> libros = cl.getAllLibrosPublic();
+            return Response.ok(gson.toJson(libros)).build();
+        } catch (SQLException | ClassNotFoundException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Ocurrió un error. Intente más tarde.\"}")
+                    .build();
+        }
+    }
 
     @Path("getAllLibros")
     @Produces(MediaType.APPLICATION_JSON)
