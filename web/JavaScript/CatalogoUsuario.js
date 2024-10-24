@@ -90,25 +90,8 @@ window.onload = function () {
     cargarUsuarios();
 }
 
-//Funciones propias
-let paginaActual = 0;
-const usuariosPorPagina = 10;
-
-function cargarPaginaAnterior() {
-    if (paginaActual > 0) {
-        paginaActual--;
-        cargarUsuarios();
-    }
-}
-
-function cargarPaginaSiguiente() {
-    paginaActual++;
-    cargarUsuarios();
-}
-
 function cargarUsuarios() {
-    const inicio = paginaActual * usuariosPorPagina;
-    fetch(BASE_URL + `api/usuario/getAllUsuariosPaginados?inicio=${inicio}&cantidad=${usuariosPorPagina}`)
+    fetch(BASE_URL + `api/usuario/getAllUsuarios`)
             .then(response => response.json())
             .then(data => {
                 const tablaUsuarios = document.getElementById('tablaUsuarios');
@@ -304,7 +287,6 @@ function limpiarFormulario() {
     document.getElementById('a_materno').value = '';
     document.getElementById('nombre').value = '';
     document.getElementById('rol').value = '';
-    document.getElementById('search-input').value = '';
 }
 
 function validarFormulario() {

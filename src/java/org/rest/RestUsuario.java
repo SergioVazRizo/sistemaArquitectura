@@ -17,32 +17,19 @@ import org.model.Usuario;
 @Path("usuario")
 public class RestUsuario {
 
+    private final ControllerUsuario controllerUsuario;
+
+    public RestUsuario() {
+        controllerUsuario = new ControllerUsuario();
+    }
+
     @Path("getAllUsuarios")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response getAllUsuarios() {
-        String out = null;
-        List<Usuario> usuarios = null;
-        ControllerUsuario cu = new ControllerUsuario();
+        String out;
         try {
-            usuarios = cu.getAllUsuarios(); 
-            out = new Gson().toJson(usuarios);
-        } catch (ClassNotFoundException | SQLException e) {
-            out = "{\"error\":\"Ocurrió un error. Intente más tarde.\"}";
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON).entity(out).build();
-        }
-        return Response.status(Response.Status.OK).type(MediaType.APPLICATION_JSON).entity(out).build();
-    }
-
-    @Path("getAllUsuariosPaginados")
-    @Produces(MediaType.APPLICATION_JSON)
-    @GET
-    public Response getAllUsuariosPaginados(@QueryParam("inicio") int inicio, @QueryParam("cantidad") int cantidad) {
-        String out = null;
-        List<Usuario> usuarios = null;
-        ControllerUsuario cu = new ControllerUsuario();
-        try {
-            usuarios = cu.getAllUsuariosPaginados(inicio, cantidad); // Método modificado para paginación
+            List<Usuario> usuarios = controllerUsuario.getAllUsuarios();
             out = new Gson().toJson(usuarios);
         } catch (ClassNotFoundException | SQLException e) {
             out = "{\"error\":\"Ocurrió un error. Intente más tarde.\"}";
@@ -55,53 +42,42 @@ public class RestUsuario {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response agregarUsuario(@FormParam("usuario") String usuario,
-            @FormParam("password") String password,
-            @FormParam("token") String token,
-            @FormParam("a_paterno") String a_paterno,
-            @FormParam("a_materno") String a_materno,
-            @FormParam("nombre") String nombre,
-            @FormParam("rol") String rol) {
+                                   @FormParam("password") String password,
+                                   @FormParam("token") String token,
+                                   @FormParam("a_paterno") String a_paterno,
+                                   @FormParam("a_materno") String a_materno,
+                                   @FormParam("nombre") String nombre,
+                                   @FormParam("rol") String rol) {
         String out;
-        ControllerUsuario cu = new ControllerUsuario();
         try {
             Usuario nuevoUsuario = new Usuario(0, usuario, password, token, a_paterno, a_materno, nombre, rol);
-            boolean resultado = cu.agregarUsuario(nuevoUsuario);
-            if (resultado) {
-                out = "{\"success\":\"Usuario agregado correctamente\"}";
-            } else {
-                out = "{\"error\":\"No se pudo agregar el usuario\"}";
-            }
+            String resultado = controllerUsuario.agregarUsuario(nuevoUsuario);
+            out = "{\"success\":\"" + resultado + "\"}";
             return Response.ok(out).build();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             out = "{\"error\":\"Ocurrió un error. Intente más tarde.\"}";
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(out).build();
         }
     }
     
-    
     @Path("editarUsuario")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response editarUsuario(@FormParam("cve_usuario") int cve_usuario,
-            @FormParam("usuario") String usuario,
-            @FormParam("password") String password,
-            @FormParam("token") String token,
-            @FormParam("a_paterno") String a_paterno,
-            @FormParam("a_materno") String a_materno,
-            @FormParam("nombre") String nombre,
-            @FormParam("rol") String rol) {
+                                   @FormParam("usuario") String usuario,
+                                   @FormParam("password") String password,
+                                   @FormParam("token") String token,
+                                   @FormParam("a_paterno") String a_paterno,
+                                   @FormParam("a_materno") String a_materno,
+                                   @FormParam("nombre") String nombre,
+                                   @FormParam("rol") String rol) {
         String out;
-        ControllerUsuario cu = new ControllerUsuario();
         try {
             Usuario usuarioActualizado = new Usuario(cve_usuario, usuario, password, token, a_paterno, a_materno, nombre, rol);
-            boolean resultado = cu.editarUsuario(usuarioActualizado);
-            if (resultado) {
-                out = "{\"success\":\"Usuario editado correctamente\"}";
-            } else {
-                out = "{\"error\":\"No se pudo editar el usuario\"}";
-            }
+            String resultado = controllerUsuario.editarUsuario(usuarioActualizado);
+            out = "{\"success\":\"" + resultado + "\"}";
             return Response.ok(out).build();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             out = "{\"error\":\"Ocurrió un error. Intente más tarde.\"}";
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(out).build();
         }
@@ -111,11 +87,9 @@ public class RestUsuario {
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response buscarUsuario(@QueryParam("query") String query) {
-        String out = null;
-        List<Usuario> usuarios = null;
-        ControllerUsuario cu = new ControllerUsuario();
+        String out;
         try {
-            usuarios = cu.buscarUsuario(query);
+            List<Usuario> usuarios = controllerUsuario.buscarUsuario(query);
             out = new Gson().toJson(usuarios);
         } catch (ClassNotFoundException | SQLException e) {
             out = "{\"error\":\"Ocurrió un error. Intente más tarde.\"}";
@@ -123,5 +97,4 @@ public class RestUsuario {
         }
         return Response.status(Response.Status.OK).type(MediaType.APPLICATION_JSON).entity(out).build();
     }
-
 }
