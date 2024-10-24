@@ -99,6 +99,24 @@ function cerrarSesion() {
             });
 }
 
+document.getElementById('viewAllBtn').addEventListener('click', function () {
+    fetchAllBooks();
+});
+
+async function fetchAllBooks() {
+    try {
+        const response = await fetch(`${BASE_URL}api/libro/getAllLibrosPublic`);
+        if (!response.ok) {
+            throw new Error(`Error en la red: ${response.status}`);
+        }
+        const data = await response.json();
+        displayResults(data);
+    } catch (error) {
+        console.error('Error fetching all books:', error);
+    }
+}
+
+
 async function fetchBooks(query) {
     try {
         const response = await fetch(`${BASE_URL}api/libro/buscarLibroPorNombre/${query}`);
