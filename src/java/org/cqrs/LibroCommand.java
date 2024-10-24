@@ -30,13 +30,6 @@ public class LibroCommand {
         return libroDAO.editarLibro(libro) ? null : "No se pudo editar el libro.";
     }
 
-    public String eliminarLibro(int cve_libro) throws SQLException, ClassNotFoundException {
-        if (cve_libro <= 0) {
-            return "El ID del libro debe ser mayor a 0.";
-        }
-        return libroDAO.eliminarLibro(cve_libro) ? null : "No se pudo eliminar el libro.";
-    }
-
     private String validateLibro(Libro libro) {
         String nombre = libro.getNombre_libro();
         String genero = libro.getGenero_libro();

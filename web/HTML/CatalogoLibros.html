@@ -19,18 +19,13 @@
                 <span class="logo_name">Gestión de Préstamos</span>
             </div>
             <ul class="nav-links">
-                <li>
-                    <div class="icon-link" id="catalogos">
-                        <a href="#">
-                            <i class='bx bxs-food-menu'></i>
-                            <span class="link_name">Catálogos</span>
+                <li id="catalogoLibros">
+                    <div class="icon-link">
+                        <a href="CatalogoLibros.html">
+                            <i class='bx bxs-book-alt'></i>
+                            <span class="link_name">Gestión de Libros</span>
                         </a>
-                        <ul class="sub-menu">
-                            <li><a href="CatalogoUsuarios.html">Usuarios <i class='bx bx-user bx-xs'></i></a></li>
-                            <li><a href="CatalogoLibros.html">Libros <i class='bx bxs-book-alt'></i></a></li>
-                        </ul>
-                        <i class='bx bx-chevron-down arrow' ></i>
-                    </div>                   
+                    </div>
                 </li>
                 <li>
                     <a href="#" id="logoutBtn">
@@ -48,11 +43,6 @@
                         <div id="formLibro">
                             <form id="formLibro">
                                 <div class="form-group group">
-                                    <input id="cve_libro" type="text" class="form-control" readonly="">
-                                    <label for="cve_libro">Numero del libro</label>
-                                    <div class="bar"></div>
-                                </div>
-                                <div class="form-group group">
                                     <input id="nombre_libro" type="text" class="form-control" required>
                                     <label for="nombre_libro">Nombre del libro</label>
                                     <div class="bar"></div>
@@ -67,7 +57,15 @@
                                     <label for="genero_libro">Género del libro</label>
                                     <div class="bar"></div>
                                 </div>
-
+                                <div class="form-group group">
+                                    <select id="estatus" class="form-control" required>
+                                        <option value="" disabled selected>Selecciona un estado</option>
+                                        <option value="Activo">Activo</option>
+                                        <option value="Inactivo">Inactivo</option>
+                                    </select>
+                                    <div class="bar"></div>
+                                </div>
+                                
                                 <div class="form-group group">
                                     <input id="pfd_libro" type="file" class="form-control" accept="application/pdf" required onchange="previewPDF(event)">
                                 </div>
@@ -82,7 +80,7 @@
 
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-primary ml-auto" id="btnGuardar" onclick="agregarLibro()">Agregar <i class='bx bx-user-plus'></i></button>
-                                <button type="button" class="btn btn-primary ml-auto" id="btnEditar" onclick="editarLibro(cve_libro)">Editar <i class='bx bx-user-plus'></i></button>
+                                <button type="button" class="btn btn-primary ml-auto" id="btnEditar" onclick="editarLibro()">Editar <i class='bx bx-user-plus'></i></button>
                                 <button type="button" id="btnLimpiar" onclick="limpiarFormulario()">Limpiar <i class='bx bxs-eraser'></i></button>
                             </div>
                         </div>
@@ -97,7 +95,8 @@
                                     <th>Nombre del libro</th>
                                     <th>Autor del libro</th>
                                     <th>Genero del libro</th>
-                                    <th>Acciones</th>
+                                    <th>Estatus</th>
+                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody id="tablaLibro"></tbody>

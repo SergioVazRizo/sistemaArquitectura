@@ -1,22 +1,29 @@
 //URL BASE
 function setBaseURL() {
-    const URL_BASE = 'http://localhost:8080/';
+    const URL_BASE = 'http://localhost:8080/SistemaGestionArq';
     return URL_BASE;
 }
 
 // Llama a la función y almacena el resultado en una constante global
 const BASE_URL = setBaseURL();
 
+function mostrarOpcionesSegunRol() {
+    var rol = localStorage.getItem('rol');  
 
-/*Funcion para que funcione el navbar*/
-document.addEventListener('DOMContentLoaded', function () {
-    const catalogos = document.getElementById('catalogos');
+    // Ocultar todas las opciones por defecto
+    document.getElementById('catalogoUsuarios').style.display = 'none';
+    document.getElementById('catalogoLibros').style.display = 'none';
+    document.getElementById('busquedaLibros').style.display = 'none';
 
-    catalogos.addEventListener('click', () => {
-        catalogos.parentElement.classList.toggle('active');
-    });
-
-});
+    // Mostrar las opciones según el rol
+    if (rol === 'admin') {
+        document.getElementById('catalogoUsuarios').style.display = 'block';
+    } else if (rol === 'bibliotecario') {
+        document.getElementById('catalogoLibros').style.display = 'block';
+    } else if (rol === 'alumno') {
+        document.getElementById('busquedaLibros').style.display = 'block';
+    }
+}
 
 function cerrarSesion() {
     const usuario = localStorage.getItem('usuario');
@@ -27,39 +34,39 @@ function cerrarSesion() {
         return;
     }
 
-    fetch(BASE_URL + 'api/login/cerrar', {
+    fetch(BASE_URL + '/api/login/cerrar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: 'usuario=' + encodeURIComponent(usuario) + '&token=' + encodeURIComponent(token)
     })
-    .then(response => {
-        if (response.ok) {
-            // Remover usuario, token y rol del localStorage
-            localStorage.removeItem('usuario');
-            localStorage.removeItem('token');
-            localStorage.removeItem('rol'); // Eliminar el rol del localStorage
+            .then(response => {
+                if (response.ok) {
+                    // Remover usuario, token y rol del localStorage
+                    localStorage.removeItem('usuario');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('rol'); // Eliminar el rol del localStorage
 
-            Swal.fire({
-                title: 'Sesión cerrada',
-                text: 'exitosamente',
-                icon: 'success'
-            }).then(() => {
-                window.location.href = BASE_URL + 'SistemaGestion/index.html';
+                    Swal.fire({
+                        title: 'Sesión cerrada',
+                        text: 'exitosamente',
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.href = BASE_URL + '/index.html';
+                    });
+                } else {
+                    throw new Error('Error al cerrar sesión');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Ha ocurrido un error al cerrar sesión',
+                    icon: 'error'
+                });
             });
-        } else {
-            throw new Error('Error al cerrar sesión');
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        Swal.fire({
-            title: 'Error',
-            text: 'Ha ocurrido un error al cerrar sesión',
-            icon: 'error'
-        });
-    });
 }
 
 
@@ -67,13 +74,14 @@ function verificarToken() {
     const token = localStorage.getItem('token');
 
     if (!token) {
-        window.location.href = BASE_URL + 'SistemaGestion/index.html';
+        window.location.href = BASE_URL + '/index.html';
     }
 }
 
 window.onload = function () {
     verificarToken();
     startTime();
+    mostrarOpcionesSegunRol();
 };
 
 document.addEventListener('DOMContentLoaded', function () {

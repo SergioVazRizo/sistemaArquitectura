@@ -9,15 +9,6 @@ function setBaseURL() {
 // Llama a la función y almacena el resultado en una constante global
 const BASE_URL = setBaseURL();
 
-document.addEventListener('DOMContentLoaded', function () {
-    const catalogos = document.getElementById('catalogos');
-
-    catalogos.addEventListener('click', () => {
-        catalogos.parentElement.classList.toggle('active');
-    });
-
-});
-
 function verificarToken() {
     const token = localStorage.getItem('token');
 
@@ -107,23 +98,23 @@ async function cargarLibros() {
             <td>${libro.nombre_libro}</td>
             <td>${libro.autor_libro}</td>
             <td>${libro.genero_libro}</td>
+            <td>${libro.estatus}</td>
             <td>
-                <button onclick="seleccionarLibro(${libro.cve_libro}, '${libro.nombre_libro}', '${libro.autor_libro}', '${libro.genero_libro}', '${libro.pdf_libro}')">Editar</button>
-                <button onclick="eliminarLibro(${libro.cve_libro})">Eliminar</button>
+                <button onclick="seleccionarLibro(${libro.cve_libro}, '${libro.nombre_libro}', '${libro.autor_libro}', '${libro.genero_libro}','${libro.estatus}','${libro.pdf_libro}')">Editar <i class='bx bxs-edit-alt'></i></button>
             </td>
         `;
         tablaLibro.appendChild(row);
     });
 }
 
-function seleccionarLibro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_base64) {
-    document.getElementById("cve_libro").value = cve_libro;  // Cargar cve_libro
+function seleccionarLibro(cve_libro, nombre_libro, autor_libro, genero_libro, estatus, pdf_base64) {
     document.getElementById("nombre_libro").value = nombre_libro;
     document.getElementById("autor_libro").value = autor_libro;
     document.getElementById("genero_libro").value = genero_libro;
+    document.getElementById("estatus").value = estatus;
 
-    libroEditando = cve_libro; // Guardar la clave del libro que se está editando
-    document.getElementById("btnGuardar").innerText = "Editar"; // Cambiar el texto del botón a "Editar"
+    // Almacenar la clave del libro en una variable global
+    libroEditando = cve_libro; 
 
     // Decodificar y mostrar el PDF en la vista previa si existe
     if (pdf_base64) {
@@ -175,21 +166,22 @@ async function agregarLibro() {
             body: `nombre_libro=${encodeURIComponent(document.getElementById("nombre_libro").value)}&` +
                     `autor_libro=${encodeURIComponent(document.getElementById("autor_libro").value)}&` +
                     `genero_libro=${encodeURIComponent(document.getElementById("genero_libro").value)}&` +
+                    `estatus=${encodeURIComponent(document.getElementById("estatus").value)}&` +
                     `pdf_libro=${encodeURIComponent(base64String)}`
         });
 
-        const result = await response.json(); // Obtener respuesta en formato JSON
+        const result = await response.json(); 
 
         if (response.ok) {
             Swal.fire("Éxito", "El libro se ha guardado correctamente", "success");
-            limpiarFormulario(); // Limpiar el formulario después de guardar
-            await cargarLibros(); // Recargar la tabla
+            limpiarFormulario(); 
+            await cargarLibros(); 
         } else {
             Swal.fire("Error", result.error || "Hubo un problema al guardar el libro", "error");
         }
     };
 
-    reader.readAsDataURL(file); // Leer el archivo como Data URL
+    reader.readAsDataURL(file); 
 }
 
 async function editarLibro() {
@@ -228,6 +220,7 @@ async function actualizarLibro(cve_libro, pdf_libro) {
         body: `nombre_libro=${encodeURIComponent(document.getElementById("nombre_libro").value)}&` +
                 `autor_libro=${encodeURIComponent(document.getElementById("autor_libro").value)}&` +
                 `genero_libro=${encodeURIComponent(document.getElementById("genero_libro").value)}&` +
+                `estatus=${encodeURIComponent(document.getElementById("estatus").value)}&` +
                            (pdf_libro ? `pdf_libro=${encodeURIComponent(pdf_libro)}` : '')
     });
 
@@ -241,33 +234,13 @@ async function actualizarLibro(cve_libro, pdf_libro) {
         Swal.fire("Error", result.error || "Hubo un problema al actualizar el libro", "error");
     }
 }
-
-// Función para eliminar un libro
-async function eliminarLibro(cve_libro) {
-    try {
-        const response = await fetch(`${BASE_URL}api/libro/eliminarLibro/${cve_libro}`, {
-            method: 'DELETE'
-        });
-
-        const result = await response.json(); // Obtener respuesta en formato JSON
-
-        if (response.ok) {
-            Swal.fire("Éxito", "El libro se ha eliminado correctamente", "success");
-            await cargarLibros(); // Recargar la tabla
-        } else {
-            Swal.fire("Error", result.error || "Hubo un problema al eliminar el libro", "error");
-        }
-    } catch (error) {
-        Swal.fire("Error", "Hubo un problema en la conexión", "error");
-    }
-}
                 
 function limpiarFormulario() {
-    document.getElementById("cve_libro").value = "";
     document.getElementById("nombre_libro").value = "";
     document.getElementById("autor_libro").value = "";
     document.getElementById("genero_libro").value = "";
     document.getElementById("pfd_libro").value = "";
+    document.getElementById("estatus").value = "";
     removePDF();
     libroEditando = null;
 }

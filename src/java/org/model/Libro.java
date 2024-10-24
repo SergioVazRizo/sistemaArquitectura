@@ -1,18 +1,21 @@
 package org.model;
 
 public class Libro {
+
     private int cve_libro;
     private String nombre_libro;
     private String autor_libro;
     private String genero_libro;
     private String pdf_libro;
+    private String estatus;
 
-    public Libro(int cve_libro, String nombre_libro, String autor_libro, String genero_libro, String pdf_libro) {
+    public Libro(int cve_libro, String nombre_libro, String autor_libro, String genero_libro, String pdf_libro, String estatus) {
         this.cve_libro = cve_libro;
         this.nombre_libro = nombre_libro;
         this.autor_libro = autor_libro;
         this.genero_libro = genero_libro;
         this.pdf_libro = pdf_libro;
+        this.estatus = estatus;
     }
 
     // Getters y Setters
@@ -54,6 +57,14 @@ public class Libro {
 
     public void setPdf_libro(String pdf_libro) {
         this.pdf_libro = pdf_libro;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
     }
 
 }

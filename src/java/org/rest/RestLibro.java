@@ -50,14 +50,16 @@ public class RestLibro {
     public Response agregarLibro(@FormParam("nombre_libro") String nombre_libro,
             @FormParam("autor_libro") String autor_libro,
             @FormParam("genero_libro") String genero_libro,
-            @FormParam("pdf_libro") String pdf_libro) {
-        if (nombre_libro == null || autor_libro == null || genero_libro == null || pdf_libro == null) {
+            @FormParam("estatus") String estatus,
+            @FormParam("pdf_libro") String pdf_libro)
+            {
+        if (nombre_libro == null || autor_libro == null || genero_libro == null || pdf_libro == null || estatus == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\":\"Todos los campos son obligatorios.\"}")
                     .build();
         }
 
-        Libro nuevoLibro = new Libro(0, nombre_libro, autor_libro, genero_libro, pdf_libro);
+        Libro nuevoLibro = new Libro(0, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
         try {
             String resultado = cl.agregarLibro(nuevoLibro);
             if (resultado == null) {
@@ -83,6 +85,7 @@ public class RestLibro {
             @FormParam("nombre_libro") String nombre_libro,
             @FormParam("autor_libro") String autor_libro,
             @FormParam("genero_libro") String genero_libro,
+            @FormParam("estatus") String estatus,
             @FormParam("pdf_libro") String pdf_libro) {
         if (nombre_libro == null || autor_libro == null || genero_libro == null || pdf_libro == null) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -90,7 +93,7 @@ public class RestLibro {
                     .build();
         }
 
-        Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro);
+        Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
         try {
             String resultado = cl.editarLibro(libro);
             if (resultado == null) {
@@ -106,24 +109,5 @@ public class RestLibro {
                     .build();
         }
     }
-
-    @Path("eliminarLibro/{cve_libro}")
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response eliminarLibro(@PathParam("cve_libro") int cve_libro) {
-        try {
-            String resultado = cl.eliminarLibro(cve_libro);
-            if (resultado == null) {
-                return Response.ok("{\"success\":\"Libro eliminado correctamente\"}").build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("{\"error\":\"" + resultado + "\"}")
-                        .build();
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\":\"Ocurrió un error. Intente más tarde.\"}")
-                    .build();
-        }
-    }
+    
 }

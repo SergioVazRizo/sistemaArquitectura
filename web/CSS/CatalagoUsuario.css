@@ -166,19 +166,6 @@
     border-color: #5264AE; /* Color del borde en foco */
 }
 
-.search-container {
-    margin-top: 50px;
-    text-align: center;
-}
-
-#search-input {
-    padding: 10px;
-    font-size: 16px;
-    width: 200px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
 button {
   padding: 12.5px 30px;
   border: 0;

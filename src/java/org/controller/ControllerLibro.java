@@ -31,16 +31,13 @@ public class ControllerLibro {
     public List<Libro> getAllLibros() throws SQLException, ClassNotFoundException {
         return libroQuery.getAllLibros();
     }
-
+    
     public String agregarLibro(Libro libro) throws ClassNotFoundException, SQLException {
         return libroCommand.agregarLibro(libro);
     }
-
+    
     public String editarLibro(Libro libro) throws ClassNotFoundException, SQLException {
         return libroCommand.editarLibro(libro);
     }
-
-    public String eliminarLibro(int cve_libro) throws ClassNotFoundException, SQLException {
-        return libroCommand.eliminarLibro(cve_libro);
-    }
+    
 }

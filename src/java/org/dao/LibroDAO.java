@@ -36,8 +36,9 @@ public class LibroDAO {
                 String autor_libro = rs.getString("autor_libro");
                 String genero_libro = rs.getString("genero_libro");
                 String pdf_libro = rs.getString("pdf_libro");
+                String estatus = rs.getString("estatus");
 
-                Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro);
+                Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
                 librosList.add(libro);
             }
         } catch (SQLException e) {
@@ -60,7 +61,7 @@ public class LibroDAO {
     }
 
     public boolean agregarLibro(Libro libro) throws SQLException, ClassNotFoundException {
-        String query = "INSERT INTO Libro (nombre_libro, autor_libro, genero_libro, pdf_libro) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Libro (nombre_libro, autor_libro, genero_libro, estatus, pdf_libro) VALUES (?, ?, ?, ?, ?)";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -70,7 +71,8 @@ public class LibroDAO {
             pstmt.setString(1, libro.getNombre_libro());
             pstmt.setString(2, libro.getAutor_libro());
             pstmt.setString(3, libro.getGenero_libro());
-            pstmt.setString(4, libro.getPdf_libro());
+            pstmt.setString(4, libro.getEstatus());
+            pstmt.setString(5, libro.getPdf_libro());
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -89,7 +91,7 @@ public class LibroDAO {
     }
 
     public boolean editarLibro(Libro libro) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE Libro SET nombre_libro=?, autor_libro=?, genero_libro=?, pdf_libro=? WHERE cve_libro=?";
+        String query = "UPDATE Libro SET nombre_libro=?, autor_libro=?, genero_libro=?, estatus=?, pdf_libro=? WHERE cve_libro=?";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -99,8 +101,10 @@ public class LibroDAO {
             pstmt.setString(1, libro.getNombre_libro());
             pstmt.setString(2, libro.getAutor_libro());
             pstmt.setString(3, libro.getGenero_libro());
-            pstmt.setString(4, libro.getPdf_libro());
-            pstmt.setInt(5, libro.getCve_libro());
+            pstmt.setString(4, libro.getEstatus());
+            pstmt.setString(5, libro.getPdf_libro());
+            
+            pstmt.setInt(6, libro.getCve_libro());
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -118,29 +122,4 @@ public class LibroDAO {
         }
     }
 
-    public boolean eliminarLibro(int cve_libro) throws SQLException, ClassNotFoundException {
-        String query = "DELETE FROM Libro WHERE cve_libro=?";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = conexion.openConnection();
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, cve_libro);
-            int filasAfectadas = pstmt.executeUpdate();
-            return filasAfectadas > 0;
-        } catch (SQLException ex) {
-            System.out.println(ex);
-            return false;
-        } finally {
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-                conexion.closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
