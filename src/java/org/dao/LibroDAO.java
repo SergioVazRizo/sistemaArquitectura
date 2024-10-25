@@ -17,6 +17,49 @@ public class LibroDAO {
         this.conexion = new ConexionMySQL();
     }
 
+    public List<Libro> getAllLibrosPublic() throws SQLException, ClassNotFoundException {
+        List<Libro> librosList = new ArrayList<>();
+        String query = "SELECT * FROM Libro WHERE estatus = 'Activo'";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+
+        try {
+            conn = conexion.openConnection();
+            pstm = conn.prepareStatement(query);
+            rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                int cve_libro = rs.getInt("cve_libro");
+                String nombre_libro = rs.getString("nombre_libro");
+                String autor_libro = rs.getString("autor_libro");
+                String genero_libro = rs.getString("genero_libro");
+                String pdf_libro = rs.getString("pdf_libro");
+                String estatus = rs.getString("estatus");
+
+                Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
+                librosList.add(libro);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+                conexion.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return librosList;
+    }
+
     public List<Libro> getAllLibros() throws SQLException, ClassNotFoundException {
         List<Libro> librosList = new ArrayList<>();
         String query = "SELECT * FROM Libro";
@@ -62,7 +105,7 @@ public class LibroDAO {
 
     public List<Libro> buscarLibroPorNombre(String nombre) throws SQLException, ClassNotFoundException {
         List<Libro> librosList = new ArrayList<>();
-        String query = "SELECT * FROM Libro WHERE nombre_libro LIKE ?";
+        String query = "SELECT * FROM Libro WHERE nombre_libro LIKE ? AND estatus = 'Activo'";
 
         Connection conn = null;
         PreparedStatement pstm = null;

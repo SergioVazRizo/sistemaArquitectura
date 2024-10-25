@@ -19,7 +19,7 @@ public class ControllerLibro {
     }
 
     public List<LibroViewModels> getAllLibrosPublic() throws SQLException, ClassNotFoundException {
-        List<Libro> Libro = libroQuery.getAllLibros();
+        List<Libro> Libro = libroQuery.getAllLibrosPublic();
         List<LibroViewModels> respuesta = new ArrayList<>();
         for (Libro i : Libro) {
             LibroViewModels item = new LibroViewModels(i.getCve_libro(), i.getNombre_libro(), i.getAutor_libro(), i.getGenero_libro(), i.getPdf_libro());
