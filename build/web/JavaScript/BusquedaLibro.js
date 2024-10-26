@@ -150,7 +150,8 @@ function displayResults(books) {
             <h3>${libro.nombre_libro}</h3>
             <p>Autor: ${libro.autor_libro}</p>
             <p>Genero: ${libro.genero_libro}</p>
-            <h4>${estado}</h4>
+            <h5>${estado}</h5>
+            <h4>${libro.universidad}</h4>
             <button onclick="previewPDF('${libro.pdf_libro}')">Visualizar <i class='bx bx-show-alt'></i></button>
         `;
         resultsContainer.appendChild(resultItem);
