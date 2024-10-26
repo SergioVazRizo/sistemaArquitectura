@@ -7,14 +7,16 @@ public class Libro {
     private String autor_libro;
     private String genero_libro;
     private String pdf_libro;
+    private String universidad;
     private String estatus;
 
-    public Libro(int cve_libro, String nombre_libro, String autor_libro, String genero_libro, String pdf_libro, String estatus) {
+    public Libro(int cve_libro, String nombre_libro, String autor_libro, String genero_libro, String pdf_libro, String universidad, String estatus) {
         this.cve_libro = cve_libro;
         this.nombre_libro = nombre_libro;
         this.autor_libro = autor_libro;
         this.genero_libro = genero_libro;
         this.pdf_libro = pdf_libro;
+        this.universidad = universidad;
         this.estatus = estatus;
     }
 
@@ -67,4 +69,12 @@ public class Libro {
         this.estatus = estatus;
     }
 
+    public String getUniversidad() {
+        return universidad;
+    }
+
+    public void setUniversidad(String universidad) {
+        this.universidad = universidad;
+    }
+    
 }

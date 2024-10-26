@@ -16,10 +16,6 @@ public class LibroQuery {
     public List<Libro> getAllLibros() throws SQLException, ClassNotFoundException {
         return libroDAO.getAllLibros();
     }
-    
-    public List<Libro> getAllLibrosPublic() throws SQLException, ClassNotFoundException {
-        return libroDAO.getAllLibrosPublic();
-    }
 
     public List<Libro> buscarLibroPorNombre(String nombre) throws SQLException, ClassNotFoundException {
         return libroDAO.buscarLibroPorNombre(nombre);

@@ -65,6 +65,7 @@ public class RestLibro {
             @FormParam("autor_libro") String autor_libro,
             @FormParam("genero_libro") String genero_libro,
             @FormParam("estatus") String estatus,
+            @FormParam("universidad") String universidad,
             @FormParam("pdf_libro") String pdf_libro) {
         if (nombre_libro == null || autor_libro == null || genero_libro == null || pdf_libro == null || estatus == null) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -72,7 +73,7 @@ public class RestLibro {
                     .build();
         }
 
-        Libro nuevoLibro = new Libro(0, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
+        Libro nuevoLibro = new Libro(0, nombre_libro, autor_libro, genero_libro, pdf_libro, universidad, estatus);
         try {
             String resultado = cl.agregarLibro(nuevoLibro);
             if (resultado == null) {
@@ -99,14 +100,15 @@ public class RestLibro {
             @FormParam("autor_libro") String autor_libro,
             @FormParam("genero_libro") String genero_libro,
             @FormParam("estatus") String estatus,
+            @FormParam("universidad") String universidad,
             @FormParam("pdf_libro") String pdf_libro) {
-        if (nombre_libro == null || autor_libro == null || genero_libro == null || pdf_libro == null) {
+        if (nombre_libro == null || autor_libro == null || genero_libro == null || estatus == null || pdf_libro == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\":\"Todos los campos son obligatorios.\"}")
                     .build();
         }
 
-        Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
+        Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, universidad, estatus);
         try {
             String resultado = cl.editarLibro(libro);
             if (resultado == null) {

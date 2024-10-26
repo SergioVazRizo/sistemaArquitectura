@@ -18,7 +18,7 @@ function mostrarOpcionesSegunRol() {
     // Mostrar las opciones según el rol
     if (rol === 'admin') {
         document.getElementById('catalogoUsuarios').style.display = 'block';
-    } else if (rol === 'bibliotecario') {
+    } else if (rol === 'biblio') {
         document.getElementById('catalogoLibros').style.display = 'block';
     } else if (rol === 'alumno') {
         document.getElementById('busquedaLibros').style.display = 'block';

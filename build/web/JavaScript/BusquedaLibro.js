@@ -132,7 +132,7 @@ async function fetchBooks(query) {
 
 function displayResults(books) {
     const resultsContainer = document.getElementById('resultsContainer');
-    resultsContainer.innerHTML = ''; // Limpiar resultados anteriores
+    resultsContainer.innerHTML = ''; 
 
     if (books.length === 0) {
         resultsContainer.innerHTML = '<p>No se encontraron resultados.</p>';
@@ -142,12 +142,17 @@ function displayResults(books) {
     books.forEach(libro => {
         const resultItem = document.createElement('div');
         resultItem.className = 'result-item';
+
+        // Convertir el estatus
+        let estado = libro.estatus === 'Activo' ? 'Disponible' : 'Prestado';
+
         resultItem.innerHTML = `
-                        <h3>${libro.nombre_libro}</h3>
-                        <p>Autor: ${libro.autor_libro}</p>
-                        <p>Genero: ${libro.genero_libro}</p>
-                        <button onclick="previewPDF('${libro.pdf_libro}')">Ver Documento</button>
-                    `;
+            <h3>${libro.nombre_libro}</h3>
+            <p>Autor: ${libro.autor_libro}</p>
+            <p>Genero: ${libro.genero_libro}</p>
+            <h4>${estado}</h4>
+            <button onclick="previewPDF('${libro.pdf_libro}')">Visualizar <i class='bx bx-show-alt'></i></button>
+        `;
         resultsContainer.appendChild(resultItem);
     });
 }

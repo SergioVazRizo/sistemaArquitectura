@@ -17,49 +17,6 @@ public class LibroDAO {
         this.conexion = new ConexionMySQL();
     }
 
-    public List<Libro> getAllLibrosPublic() throws SQLException, ClassNotFoundException {
-        List<Libro> librosList = new ArrayList<>();
-        String query = "SELECT * FROM Libro WHERE estatus = 'Activo'";
-
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-
-        try {
-            conn = conexion.openConnection();
-            pstm = conn.prepareStatement(query);
-            rs = pstm.executeQuery();
-
-            while (rs.next()) {
-                int cve_libro = rs.getInt("cve_libro");
-                String nombre_libro = rs.getString("nombre_libro");
-                String autor_libro = rs.getString("autor_libro");
-                String genero_libro = rs.getString("genero_libro");
-                String pdf_libro = rs.getString("pdf_libro");
-                String estatus = rs.getString("estatus");
-
-                Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
-                librosList.add(libro);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-                conexion.closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return librosList;
-    }
-
     public List<Libro> getAllLibros() throws SQLException, ClassNotFoundException {
         List<Libro> librosList = new ArrayList<>();
         String query = "SELECT * FROM Libro";
@@ -80,8 +37,9 @@ public class LibroDAO {
                 String genero_libro = rs.getString("genero_libro");
                 String pdf_libro = rs.getString("pdf_libro");
                 String estatus = rs.getString("estatus");
+                String universidad = rs.getString("universidad");
 
-                Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
+                Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, universidad, estatus);
                 librosList.add(libro);
             }
         } catch (SQLException e) {
@@ -114,7 +72,7 @@ public class LibroDAO {
         try {
             conn = conexion.openConnection();
             pstm = conn.prepareStatement(query);
-            pstm.setString(1, "%" + nombre + "%"); // Para hacer una búsqueda parcial
+            pstm.setString(1, "%" + nombre + "%"); 
             rs = pstm.executeQuery();
 
             while (rs.next()) {
@@ -124,8 +82,9 @@ public class LibroDAO {
                 String genero_libro = rs.getString("genero_libro");
                 String pdf_libro = rs.getString("pdf_libro");
                 String estatus = rs.getString("estatus");
+                String universidad = rs.getString("universidad");
 
-                Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, estatus);
+                Libro libro = new Libro(cve_libro, nombre_libro, autor_libro, genero_libro, pdf_libro, universidad, estatus);
                 librosList.add(libro);
             }
         } finally {
@@ -143,7 +102,7 @@ public class LibroDAO {
     }
 
     public boolean agregarLibro(Libro libro) throws SQLException, ClassNotFoundException {
-        String query = "INSERT INTO Libro (nombre_libro, autor_libro, genero_libro, estatus, pdf_libro) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Libro (nombre_libro, autor_libro, genero_libro, estatus, universidad, pdf_libro) VALUES (?, ?, ?, ?, ?, ?)";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -154,7 +113,8 @@ public class LibroDAO {
             pstmt.setString(2, libro.getAutor_libro());
             pstmt.setString(3, libro.getGenero_libro());
             pstmt.setString(4, libro.getEstatus());
-            pstmt.setString(5, libro.getPdf_libro());
+            pstmt.setString(5, "Universidad de Guanajuato");
+            pstmt.setString(6, libro.getPdf_libro());
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException ex) {
@@ -173,7 +133,7 @@ public class LibroDAO {
     }
 
     public boolean editarLibro(Libro libro) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE Libro SET nombre_libro=?, autor_libro=?, genero_libro=?, estatus=?, pdf_libro=? WHERE cve_libro=?";
+        String query = "UPDATE Libro SET nombre_libro=?, autor_libro=?, genero_libro=?, estatus=?,universidad =?, pdf_libro=? WHERE cve_libro=?";
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -184,9 +144,10 @@ public class LibroDAO {
             pstmt.setString(2, libro.getAutor_libro());
             pstmt.setString(3, libro.getGenero_libro());
             pstmt.setString(4, libro.getEstatus());
-            pstmt.setString(5, libro.getPdf_libro());
+            pstmt.setString(5, "Universidad de Guanajuato");
+            pstmt.setString(6, libro.getPdf_libro());
 
-            pstmt.setInt(6, libro.getCve_libro());
+            pstmt.setInt(7, libro.getCve_libro());
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException ex) {

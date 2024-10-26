@@ -19,6 +19,7 @@ Create Table Libro (
     autor_libro varchar(250),
     genero_libro varchar(250),
     estatus varchar(250),
+    universidad varchar(250),
     pdf_libro longtext
 );
 

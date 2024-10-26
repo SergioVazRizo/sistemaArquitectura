@@ -30,8 +30,6 @@ h1, h2 {
     color: #333; /* Color de texto */
 }
 
-
-
 /* Estilo para la búsqueda */
 .search-container {
     display: block;
@@ -184,14 +182,14 @@ button:hover {
 
 /* Estilo para el botón de cierre */
 .close {
-    color: #000;
+    color: #C96868;
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
 }
 
 .close:hover, .close:focus {
-    color: #d9534f;
+    color: #B8001F;
     text-decoration: none;
     cursor: pointer;
 }

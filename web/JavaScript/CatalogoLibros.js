@@ -105,9 +105,9 @@ function removePDF() {
     const pdfPreview = document.getElementById("pdfPreview");
     const fileInput = document.getElementById("pfd_libro");
 
-    pdfPreview.src = "";  // Limpiar la vista previa del PDF
-    pdfPreviewContainer.style.display = "none";  // Ocultar el contenedor de vista previa
-    fileInput.value = "";  // Limpiar el input del archivo PDF
+    pdfPreview.src = "";  
+    pdfPreviewContainer.style.display = "none";  
+    fileInput.value = "";  
 }
 
 async function cargarLibros() {
@@ -148,9 +148,9 @@ function seleccionarLibro(cve_libro, nombre_libro, autor_libro, genero_libro, es
         const pdfPreview = document.getElementById("pdfPreview");
 
         pdfPreview.src = fileURL;
-        pdfPreviewContainer.style.display = "block"; // Asegúrate de que el contenedor esté visible
+        pdfPreviewContainer.style.display = "block"; 
     } else {
-        removePDF(); // Llama a la función para limpiar la vista previa si no hay PDF
+        removePDF(); 
     }
 }
 
@@ -175,13 +175,13 @@ async function agregarLibro() {
     const file = fileInput.files[0];
 
     if (!file) {
-        Swal.fire("Error", "Por favor, selecciona un archivo PDF", "error");
+        Swal.fire("Error", "Por favor, selecciona un archivo", "error");
         return;
     }
 
     const reader = new FileReader();
     reader.onloadend = async function () {
-        const base64String = reader.result.split(',')[1]; // Extraer solo la parte Base64
+        const base64String = reader.result.split(',')[1];
 
         const response = await fetch(BASE_URL + "api/libro/agregarLibro", {
             method: "POST",

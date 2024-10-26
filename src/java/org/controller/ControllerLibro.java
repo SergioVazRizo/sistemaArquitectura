@@ -19,10 +19,10 @@ public class ControllerLibro {
     }
 
     public List<LibroViewModels> getAllLibrosPublic() throws SQLException, ClassNotFoundException {
-        List<Libro> Libro = libroQuery.getAllLibrosPublic();
+        List<Libro> Libro = libroQuery.getAllLibros();
         List<LibroViewModels> respuesta = new ArrayList<>();
         for (Libro i : Libro) {
-            LibroViewModels item = new LibroViewModels(i.getCve_libro(), i.getNombre_libro(), i.getAutor_libro(), i.getGenero_libro(), i.getPdf_libro());
+            LibroViewModels item = new LibroViewModels(i.getCve_libro(), i.getNombre_libro(), i.getAutor_libro(), i.getGenero_libro(),i.getEstatus(),i.getUniversidad(), i.getPdf_libro());
             respuesta.add(item);
         }
         return respuesta;
@@ -36,7 +36,7 @@ public class ControllerLibro {
         List<Libro> libros = libroQuery.buscarLibroPorNombre(nombre);
         List<LibroViewModels> respuesta = new ArrayList<>();
         for (Libro i : libros) {
-            LibroViewModels item = new LibroViewModels(i.getCve_libro(), i.getNombre_libro(), i.getAutor_libro(), i.getGenero_libro(), i.getPdf_libro());
+            LibroViewModels item = new LibroViewModels(i.getCve_libro(), i.getNombre_libro(), i.getAutor_libro(), i.getGenero_libro(),i.getEstatus(),i.getUniversidad(), i.getPdf_libro());
             respuesta.add(item);
         }
         return respuesta;
