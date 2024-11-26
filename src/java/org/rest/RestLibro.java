@@ -16,6 +16,20 @@ public class RestLibro {
     private final ControllerLibro cl = new ControllerLibro();
     private final Gson gson = new Gson();
 
+    @Path("getAllLibrosTodos")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Response getAllLibrosTodos() {
+        try {
+            List<LibroViewModels> libros = cl.getLibrosTodos();
+            return Response.ok(gson.toJson(libros)).build();
+        } catch (SQLException | ClassNotFoundException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Ocurrió un error. Intente más tarde.\"}")
+                    .build();
+        }
+    }
+
     @Path("getAllLibrosPublic")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
@@ -36,6 +50,20 @@ public class RestLibro {
     public Response getAllLibros() {
         try {
             List<Libro> libros = cl.getAllLibros();
+            return Response.ok(gson.toJson(libros)).build();
+        } catch (SQLException | ClassNotFoundException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"error\":\"Ocurrió un error. Intente más tarde.\"}")
+                    .build();
+        }
+    }
+
+    @Path("buscarLibroPorNombreTodos/{nombre}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Response buscarLibroPorNombreTodos(@PathParam("nombre") String nombre) {
+        try {
+            List<LibroViewModels> libros = cl.buscarLibroPorNombreTodos(nombre);
             return Response.ok(gson.toJson(libros)).build();
         } catch (SQLException | ClassNotFoundException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

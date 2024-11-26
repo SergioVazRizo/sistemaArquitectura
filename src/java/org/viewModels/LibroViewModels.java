@@ -6,22 +6,22 @@ package org.viewModels;
  */
 public class LibroViewModels {
 
-    private int L_id;
-    private String nombre_libro;
-    private String autor_libro;
-    private String genero_libro;
+    private int lId;
+    private String nombreL;
+    private String autor;
     private String estatus;
+    private String genero;
     private String universidad;
-    private String pdf_libro;
+    private String pdf;
 
-    public LibroViewModels(int L_id, String nombre_libro, String autor_libro, String genero_libro, String estatus, String universidad, String pdf_libro) {
-        this.L_id = L_id;
-        this.nombre_libro = nombre_libro;
-        this.autor_libro = autor_libro;
-        this.genero_libro = genero_libro;
+    public LibroViewModels(int lId, String nombreL, String autor, String estatus, String genero, String universidad, String pdf) {
+        this.lId = lId;
+        this.nombreL = nombreL;
+        this.autor = autor;
         this.estatus = estatus;
+        this.genero = genero;
         this.universidad = universidad;
-        this.pdf_libro = pdf_libro;
+        this.pdf = pdf;
     }
 
     public LibroViewModels() {

@@ -105,7 +105,7 @@ document.getElementById('viewAllBtn').addEventListener('click', function () {
 
 async function fetchAllBooks() {
     try {
-        const response = await fetch(`${BASE_URL}api/libro/getAllLibrosPublic`);
+        const response = await fetch(`${BASE_URL}api/libro/getAllLibrosTodos`);
         if (!response.ok) {
             throw new Error(`Error en la red: ${response.status}`);
         }
@@ -119,7 +119,7 @@ async function fetchAllBooks() {
 
 async function fetchBooks(query) {
     try {
-        const response = await fetch(`${BASE_URL}api/libro/buscarLibroPorNombre/${query}`);
+        const response = await fetch(`${BASE_URL}api/libro/buscarLibroPorNombreTodos/${query}`);
         if (!response.ok) {
             throw new Error(`Error en la red: ${response.status}`);
         }
@@ -147,33 +147,77 @@ function displayResults(books) {
         let estado = libro.estatus === 'Activo' ? 'Disponible' : 'Prestado';
 
         resultItem.innerHTML = `
-            <h3>${libro.nombre_libro}</h3>
-            <p>Autor: ${libro.autor_libro}</p>
-            <p>Genero: ${libro.genero_libro}</p>
+            <h3>${libro.nombreL}</h3>
+            <p>Autor: ${libro.autor}</p>
+            <p>Genero: ${libro.genero}</p>
             <h5>${estado}</h5>
             <h4>${libro.universidad}</h4>
-            <button onclick="previewPDF('${libro.pdf_libro}')">Visualizar <i class='bx bx-show-alt'></i></button>
+            <button onclick="previewPDF('${libro.pdf}')">Visualizar <i class='bx bx-show-alt'></i></button>
         `;
         resultsContainer.appendChild(resultItem);
     });
 }
 
-function previewPDF(base64) {
-    const modal = document.getElementById('pdfModal');
-    const pdfPreviewModal = document.getElementById('pdfPreviewModal');
+//function previewPDF(base64) {
+//    const modal = document.getElementById('pdfModal');
+//    const pdfPreviewModal = document.getElementById('pdfPreviewModal');
+//
+//    // Crear un Blob a partir del base64 y mostrarlo en el iframe
+//    const byteCharacters = atob(base64);
+//    const byteNumbers = new Array(byteCharacters.length);
+//    for (let i = 0; i < byteCharacters.length; i++) {
+//        byteNumbers[i] = byteCharacters.charCodeAt(i);
+//    }
+//    const byteArray = new Uint8Array(byteNumbers);
+//    const blob = new Blob([byteArray], {type: 'application/pdf'});
+//    const fileURL = URL.createObjectURL(blob);
+//
+//    pdfPreviewModal.src = fileURL;
+//    modal.style.display = "block"; // Muestra el modal
+//}
 
-    // Crear un Blob a partir del base64 y mostrarlo en el iframe
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+function isValidBase64(str) {
+    const base64Regex = /^[A-Za-z0-9+/=]+$/;
+    return base64Regex.test(str);
+}
+
+function previewPDF(pdfBase64) {
+    try {
+        // Elimina el prefijo si existe
+        if (pdfBase64.startsWith("data:application/pdf;base64,")) {
+            pdfBase64 = pdfBase64.replace("data:application/pdf;base64,", "");
+        }
+
+        // Validar que solo contenga caracteres Base64 válidos
+        if (!isValidBase64(pdfBase64)) {
+            console.error("La cadena Base64 contiene caracteres no válidos.");
+            return;
+        }
+
+        // Convertir la cadena Base64 a bytes
+        const byteCharacters = atob(pdfBase64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        
+        // Crear un Blob a partir del arreglo de bytes
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        
+        // Abrir una nueva ventana y mostrar el PDF
+        const pdfWindow = window.open();
+        if (pdfWindow) {
+            pdfWindow.document.write(
+                `<iframe src="${blobUrl}" width="100%" height="100%"></iframe>`
+            );
+        } else {
+            console.error("No se pudo abrir la ventana.");
+        }
+    } catch (error) {
+        console.error("Error al intentar previsualizar el PDF:", error);
     }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], {type: 'application/pdf'});
-    const fileURL = URL.createObjectURL(blob);
-
-    pdfPreviewModal.src = fileURL;
-    modal.style.display = "block"; // Muestra el modal
 }
 
 function closeModal() {
